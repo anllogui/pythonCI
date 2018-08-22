@@ -8,4 +8,3 @@ flaskr.egg-info/
 */__pycache__/
 .coverage
 nb/\.ipynb_checkpoints/
-logs/*
