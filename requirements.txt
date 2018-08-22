@@ -1,0 +1,5 @@
+flask
+coverage
+pytest
+pytest-xdist
+pytest-flask
