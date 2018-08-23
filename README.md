@@ -7,21 +7,20 @@ A project example to use CI with Jenkins
 
 ```
 echo "---- SETING ENVS ---- "
-PYENV_HOME=$WORKSPACE/.pythonCI/
+PYENV_HOME=$WORKSPACE/venv/
 export LC_ALL=es_ES.utf-8
 export LANG=es_ES.utf-8
 export FLASK_APP=$WORKSPACE/flaskr
 export FLASK_ENV=development
-export PATH=$PATH:/Users/anllogui/anaconda3/bin
 
 echo "---- CLEANING ENVIRONMENT ----"
 if [ -d $PYENV_HOME ]; then
 	echo "- Project exists: cleanning.."
-    conda remove -p $PYENV_HOME --all
+    rm -Rf $PYENV_HOME 
 fi
-conda-env create -f environment.yml -p $PYENV_HOME python=3.6
-source activate $PYENV_HOME
-# conda install --yes --file requirements.txt
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
 pip install -e .
 pytest
 # flask run
