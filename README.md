@@ -3,8 +3,9 @@
 A project example to use CI with Jenkins
 
 
-# GitHub Shell
+# Jenkins Shell
 
+```
 echo "---- SETING ENVS ---- "
 PYENV_HOME=$WORKSPACE/.pythonCI/
 export LC_ALL=es_ES.utf-8
@@ -25,3 +26,4 @@ pip install -e .
 pytest
 # flask run
 
+```
