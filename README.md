@@ -12,7 +12,8 @@ git clone https://github.com/mlflow/mlflow
 ```
 cd into the examples directory within your clone of MLflow - we’ll use this working directory for running the tutorial. We avoid running directly from our clone of MLflow as doing so would cause the tutorial to use MLflow from source, rather than your PyPi installation of MLflow.
 
-# Train a Model
+
+# Train a Model
 
 python examples/sklearn_elasticnet_wine/train.py
 
@@ -22,7 +23,8 @@ python examples/sklearn_elasticnet_wine/train.py
 A project example to use CI with Jenkins based on:
 https://www.wintellect.com/creating-machine-learning-web-api-flask/
 
-## Code
+## Code
+ 
 Get the code:
 ```
 git pull https://github.com/anllogui/pythonCI.git
@@ -47,7 +49,7 @@ jupyter notebook
 ```
 Execute: Simple Regression.ipynb
 
-## Expose the model
+## Expose the model
 
 The service is developed in "pythonCI/flaskr/linreg.py".
 
@@ -78,6 +80,8 @@ To access to jenkins: http://localhost:8080
 ```
 brew services stop jenkins
 ```
+
+## Shell to Execute
 
 ```
 echo "---- SETING ENVS ---- "
