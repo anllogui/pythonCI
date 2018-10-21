@@ -22,8 +22,62 @@ python examples/sklearn_elasticnet_wine/train.py
 A project example to use CI with Jenkins based on:
 https://www.wintellect.com/creating-machine-learning-web-api-flask/
 
+## Code
+Get the code:
+```
+git pull https://github.com/anllogui/pythonCI.git
+```
+There are 3 main folders:
+- nb: notebook for training the model
+- flaskr: service with the model embedeed
+- tests: service testing
 
-# Jenkins Shell
+## Create the model
+Create environment:
+```
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+To run the notebook:
+```
+cd nb
+jupyter notebook
+```
+Execute: Simple Regression.ipynb
+
+## Expose the model
+
+The service is developed in "pythonCI/flaskr/linreg.py".
+
+To run the service:
+```
+export FLASK_APP=flaskr
+export FLASK_ENV=development
+pip install -e .
+flask run
+```
+
+To test the service:
+```
+curl -i -H "Content-Type: application/json" -X POST -d '{"yearsOfExperience":8}' http://localhost:5000/linreg/predict
+```
+
+## Continuous integration
+
+After installing Jenkins:
+### start
+```
+brew services start jenkins
+```
+To access to jenkins: http://localhost:8080
+
+### stop
+
+```
+brew services stop jenkins
+```
 
 ```
 echo "---- SETING ENVS ---- "
