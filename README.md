@@ -12,7 +12,7 @@ git clone https://github.com/mlflow/mlflow
 ```
 cd into the examples directory within your clone of MLflow - we’ll use this working directory for running the tutorial. We avoid running directly from our clone of MLflow as doing so would cause the tutorial to use MLflow from source, rather than your PyPi installation of MLflow.
 
-# Train a Model -- cambiado
+# Train a Model
 
 python examples/sklearn_elasticnet_wine/train.py
 
