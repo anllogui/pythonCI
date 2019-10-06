@@ -9,3 +9,4 @@ flaskr.egg-info/
 .coverage
 nb/\.ipynb_checkpoints/
 venv/
+nb/output\.ipynb

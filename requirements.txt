@@ -12,3 +12,7 @@ scipy==1.1.0
 six==1.11.0
 Werkzeug==0.14.1
 pytest==3.9.1
+jupyter
+matplotlib
+seaborn
+mlflow
