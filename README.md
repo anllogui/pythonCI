@@ -1,28 +1,24 @@
 # mlflow tutorial
 
+## First Part
+
+### Install depencendies
+
 - Install MLflow:
+
 ```
 pip install mlflow
 ```
 
 - Install conda: https://conda.io/docs/user-guide/install/index.html#
+
 - Clone (download) the MLflow repository:
+
 ``` 
 git clone https://github.com/mlflow/mlflow
 ```
-cd into the examples directory within your clone of MLflow - we’ll use this working directory for running the tutorial. We avoid running directly from our clone of MLflow as doing so would cause the tutorial to use MLflow from source, rather than your PyPi installation of MLflow.
 
-# Train a Model
-
-python examples/sklearn_elasticnet_wine/train.py
-
-
-# pythonCI
-
-A project example to use CI with Jenkins based on:
-https://www.wintellect.com/creating-machine-learning-web-api-flask/
-
-## Code
+### Get the Code
  
 Get the code:
 ```
@@ -33,7 +29,8 @@ There are 3 main folders:
 - flaskr: service with the model embedeed
 - tests: service testing
 
-## Create the model
+### Configure environment
+
 Create environment:
 ```
 conda create --name pythonCI
@@ -41,14 +38,32 @@ conda activate pythonCI
 conda install --file requirements.txt
 ```
 
-To run the notebook:
+### Train the Model
+- Run Jupyter
 ```
-cd nb
+cd pythonCI
 jupyter notebook
 ```
-Execute: Simple Regression.ipynb
+- Go to "nb/Linear Regression.ipynb".
+- Execute Notebook
 
-## Expose the model
+To review the training results:
+- Exexute MLFlow ui:
+```
+mlflow ui
+```
+- go to: http://127.0.0.1:5000
+
+## Second Part
+
+### Automatize
+
+Automatize Model Training and Versioning
+```
+papermill Simple\ Regression.ipynb output.ipynb -p data_ver 1 -p model_ver 1
+```
+
+### Expose the model
 
 The service is developed in "pythonCI/flaskr/linreg.py".
 

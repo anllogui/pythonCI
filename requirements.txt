@@ -16,3 +16,4 @@ jupyter
 matplotlib
 seaborn
 mlflow
+papermill
