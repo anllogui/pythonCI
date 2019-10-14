@@ -28,6 +28,22 @@ def predict():
 curl -i -H "Content-Type: application/json" -X POST -d '{"yearsOfExperience":8}' http://localhost:5000/linreg/predict
 """
 
+
+
+@bp.route("/info", methods=['GET'])
+def current_details():
+    if request.method == 'GET':
+        try:
+            lr = joblib.load("models/linear_regression_model.pkl")
+
+            return jsonify({"coefficients": lr.coef_.tolist(), "intercepts": lr.intercept_})
+        except (ValueError, TypeError) as e:
+            return jsonify("Error when getting details - {}".format(e))
+
+"""
+curl -i -H "Content-Type: application/json" -X GET http://localhost:5000/linreg/info
+"""
+
 @bp.route("/retrain", methods=['POST'])
 def retrain():
     if request.method == 'POST':
@@ -56,23 +72,15 @@ def retrain():
             joblib.dump(df_training_set, "training_data.pkl")
             joblib.dump(df_training_labels, "training_labels.pkl")
 
-            lin_reg = joblib.load("./linear_regression_model.pkl")
+            #lin_reg = joblib.load("./linear_regression_model.pkl")
         except ValueError as e:
             return jsonify("Error when retraining - {}".format(e))
 
         return jsonify("Retrained model successfully.")
 
-
-@bp.route("/currentDetails", methods=['GET'])
-def current_details():
-    if request.method == 'GET':
-        try:
-            lr = joblib.load("./linear_regression_model.pkl")
-            training_set = joblib.load("./training_data.pkl")
-            labels = joblib.load("./training_labels.pkl")
-
-            return jsonify({"score": lr.score(training_set, labels),
-                            "coefficients": lr.coef_.tolist(), "intercepts": lr.intercept_})
-        except (ValueError, TypeError) as e:
-            return jsonify("Error when getting details - {}".format(e))
-            
+@bp.route("/hello", methods=['GET'])
+def hello():
+    return 1
+"""
+curl -i -H "Content-Type: application/json" -X GET http://localhost:5000/linreg/hello
+"""

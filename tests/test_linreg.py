@@ -9,3 +9,7 @@ def test_config():
 def test_hello(client):
     response = client.get('/hello')
     assert response.data == b'Hello, World!'
+
+def test_info(client):
+    data = client.get('/linreg/info').json()
+    assert float(data["coefficients"]) > 0
