@@ -101,9 +101,10 @@ service start jenkins
 ## Shell to Execute
 
 ```
+#!/bin/bash
 echo "---- SETING ENVS ---- "
-export PATH=$PATH:/home/anllogui/anaconda3/bin
-PYENV_HOME=$WORKSPACE/venv
+export PATH=$PATH:/Users/anllogui/anaconda3/bin
+PYENV_HOME=$WORKSPACE/venv/
 export LC_ALL=es_ES.utf-8
 export LANG=es_ES.utf-8
 export FLASK_APP=$WORKSPACE/flaskr
@@ -114,9 +115,15 @@ if [ -d $PYENV_HOME ]; then
 	echo "- Project exists: cleanning.."
     rm -Rf $PYENV_HOME 
 fi
+source /Users/anllogui/anaconda3/etc/profile.d/conda.sh
+echo "*** creating env ***"
 conda create --prefix $PYENV_HOME
+echo "*** activate ***"
+echo $PYENV_HOME
 conda activate $PYENV_HOME
+echo "*** install reqs ***"
 conda install --file requirements.txt
+echo "*** install flask ***"
 pip install -e .
 pytest
 # flask run

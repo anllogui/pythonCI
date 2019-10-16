@@ -15,5 +15,4 @@ pytest==3.9.1
 jupyter
 matplotlib
 seaborn
-mlflow
-papermill
+pip
