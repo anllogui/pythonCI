@@ -16,3 +16,4 @@ jupyter
 matplotlib
 seaborn
 pip
+mlflow

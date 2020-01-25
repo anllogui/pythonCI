@@ -4,25 +4,19 @@
 
 ### Install depencendies
 
+- Install conda: https://conda.io/docs/user-guide/install/index.html#
+
 - Install MLflow:
 
 ```
 pip install mlflow
 ```
 
-- Install conda: https://conda.io/docs/user-guide/install/index.html#
-
-- Clone (download) the MLflow repository:
-
-``` 
-git clone https://github.com/mlflow/mlflow
-```
-
 ### Get the Code
  
 Get the code:
 ```
-git pull https://github.com/anllogui/pythonCI.git
+git clone https://github.com/anllogui/pythonCI.git
 ```
 There are 3 main folders:
 - nb: notebook for training the model
@@ -35,7 +29,7 @@ Create environment:
 ```
 conda create --name pythonCI
 conda activate pythonCI
-conda install --file requirements.txt
+conda env create -f environment.yml
 ```
 
 ### Train the Model
@@ -44,12 +38,13 @@ conda install --file requirements.txt
 cd pythonCI
 jupyter notebook
 ```
-- Go to "nb/Linear Regression.ipynb".
+- Go to "nb/Simple_Regression.ipynb".
 - Execute Notebook
 
 To review the training results:
 - Exexute MLFlow ui:
 ```
+cd nb
 mlflow ui
 ```
 - go to: http://127.0.0.1:5000
@@ -60,7 +55,7 @@ mlflow ui
 
 Automatize Model Training and Versioning
 ```
-papermill Simple\ Regression.ipynb output.ipynb -p data_ver 1 -p model_ver 1
+papermill Simple_Regression.ipynb output.ipynb -p data_ver 1 -p model_ver 1
 ```
 
 ### Expose the model
@@ -68,10 +63,21 @@ papermill Simple\ Regression.ipynb output.ipynb -p data_ver 1 -p model_ver 1
 The service is developed in "pythonCI/flaskr/linreg.py".
 
 To run the service:
+
+**Mac/Linux**:
 ```
 cd ..
 export FLASK_APP=flaskr
 export FLASK_ENV=development
+pip install -e .
+flask run
+```
+
+**Windows**:
+```
+cd ..
+set "FLASK_APP=flaskr"
+set "FLASK_ENV=development"
 pip install -e .
 flask run
 ```
