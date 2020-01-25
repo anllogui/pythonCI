@@ -104,8 +104,7 @@ To access to jenkins: http://localhost:8080
 service start jenkins
 ```
 
-## Shell to Execute
-
+## Shell to Execute to Train the model
 ```
 #!/bin/bash
 echo "---- SETING ENVS ---- "
@@ -129,6 +128,34 @@ echo $PYENV_HOME
 conda activate $PYENV_HOME
 echo "*** install reqs ***"
 conda install --file requirements.txt
+echo "*** train model ***"
+papermill Simple_Regression.ipynb output.ipynb -p data_ver 1 -p model_ver 1
+
+```
+
+## Shell to Execute to test the app
+```
+#!/bin/bash
+echo "---- SETING ENVS ---- "
+export PATH=$PATH:/home/anllogui/anaconda3/bin
+PYENV_HOME=$WORKSPACE/venv/
+export LC_ALL=es_ES.utf-8
+export LANG=es_ES.utf-8
+export FLASK_APP=$WORKSPACE/flaskr
+export FLASK_ENV=development
+
+echo "---- CLEANING ENVIRONMENT ----"
+if [ -d $PYENV_HOME ]; then
+	echo "- Project exists: cleanning.."
+    rm -Rf $PYENV_HOME 
+fi
+source /home/anllogui/anaconda3/etc/profile.d/conda.sh
+echo "*** creating env ***"
+echo "*** activate ***"
+echo $PYENV_HOME
+echo "*** install reqs ***"
+conda env create -f environment.yml --prefix $PYENV_HOME
+conda activate $PYENV_HOME
 echo "*** install flask ***"
 pip install -e .
 pytest
