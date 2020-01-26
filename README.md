@@ -104,17 +104,38 @@ To access to jenkins: http://localhost:8080
 service start jenkins
 ```
 
-## Shell to Execute to Train the model
+## Shell to Train the model
 ```
 #!/bin/bash
 echo "---- SETING ENVS ---- "
+
 export PATH=$PATH:/home/anllogui/anaconda3/bin
 PYENV_HOME=$WORKSPACE/venv/
 export LC_ALL=es_ES.utf-8
 export LANG=es_ES.utf-8
 export FLASK_APP=$WORKSPACE/flaskr
 export FLASK_ENV=development
-export MLFLOW_TRACKING_URI="http://localhost:5000"
+export MLFLOW_TRACKING_URI="http://127.0.0.1:5000"
+
+echo "---- GETING PROPERTIES ----"
+
+file="./build.properties"
+
+if [ -f "$file" ]
+then
+  echo "$file found."
+
+  while IFS='=' read -r key value
+  do
+    key=$(echo $key | tr '.' '_')
+    eval ${key}=\${value}
+  done < "$file"
+
+  echo "Model Version = " ${model_version}
+  echo "Data Version  = " ${data_version}
+else
+  echo "$file not found."
+fi
 
 echo "---- CLEANING ENVIRONMENT ----"
 if [ -d $PYENV_HOME ]; then
@@ -129,7 +150,12 @@ echo "*** install reqs ***"
 conda env create -f environment.yml --prefix $PYENV_HOME
 conda activate pythonCI
 cd nb
-papermill Simple_Regression.ipynb output.ipynb -p data_ver 1 -p model_ver 1
+papermill Simple_Regression.ipynb output.ipynb -p data_ver ${data_version} -p model_ver ${model_version}
+
+ls -la ../models
+
+# curl -v -u admin:admin123 --upload-file pom.xml http://localhost:8081/repository/maven-releases/simple_regresion/models/simple_regresion.${data_version}.${model_version}/simple_regresion.${data_version}.${model_version}.pkl
+
 
 
 ```
