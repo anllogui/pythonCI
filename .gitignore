@@ -10,3 +10,4 @@ flaskr.egg-info/
 nb/\.ipynb_checkpoints/
 venv/
 nb/output\.ipynb
+mlruns/
