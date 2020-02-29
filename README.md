@@ -154,9 +154,7 @@ papermill Simple_Regression.ipynb output.ipynb -p data_ver ${data_version} -p mo
 
 ls -la ../models
 
-# curl -v -u admin:admin123 --upload-file pom.xml http://localhost:8081/repository/maven-releases/simple_regresion/models/simple_regresion.${data_version}.${model_version}/simple_regresion.${data_version}.${model_version}.pkl
-
-
+curl -v -u admin:admin -X POST 'http://localhost:8081/service/rest/v1/components?repository=maven-releases' -F "maven2.groupId=models" -F "maven2.artifactId=simple_regresion" -F "maven2.version=${data_version}.${model_version}" -F "maven2.asset1=../models/linear_regression_model_v${model_version}.pkl" -F "maven2.asset1.extension=pkl"
 
 ```
 
