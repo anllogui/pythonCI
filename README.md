@@ -4,25 +4,19 @@
 
 ### Install depencendies
 
+- Install conda: https://conda.io/docs/user-guide/install/index.html#
+
 - Install MLflow:
 
 ```
 pip install mlflow
 ```
 
-- Install conda: https://conda.io/docs/user-guide/install/index.html#
-
-- Clone (download) the MLflow repository:
-
-``` 
-git clone https://github.com/mlflow/mlflow
-```
-
 ### Get the Code
  
 Get the code:
 ```
-git pull https://github.com/anllogui/pythonCI.git
+git clone https://github.com/anllogui/pythonCI.git
 ```
 There are 3 main folders:
 - nb: notebook for training the model
@@ -43,12 +37,13 @@ conda activate pythonCI
 cd pythonCI
 jupyter notebook
 ```
-- Go to "nb/Linear Regression.ipynb".
+- Go to "nb/Simple_Regression.ipynb".
 - Execute Notebook
 
 To review the training results:
 - Exexute MLFlow ui:
 ```
+cd nb
 mlflow ui
 ```
 - go to: http://127.0.0.1:5000
@@ -59,7 +54,7 @@ mlflow ui
 
 Automatize Model Training and Versioning
 ```
-papermill Simple\ Regression.ipynb output.ipynb -p data_ver 1 -p model_ver 1
+papermill Simple_Regression.ipynb output.ipynb -p data_ver 1 -p model_ver 1
 ```
 
 ### Expose the model
@@ -67,10 +62,21 @@ papermill Simple\ Regression.ipynb output.ipynb -p data_ver 1 -p model_ver 1
 The service is developed in "pythonCI/flaskr/linreg.py".
 
 To run the service:
+
+**Mac/Linux**:
 ```
 cd ..
 export FLASK_APP=flaskr
 export FLASK_ENV=development
+pip install -e .
+flask run
+```
+
+**Windows**:
+```
+cd ..
+set "FLASK_APP=flaskr"
+set "FLASK_ENV=development"
 pip install -e .
 flask run
 ```
@@ -97,12 +103,65 @@ To access to jenkins: http://localhost:8080
 service start jenkins
 ```
 
-## Shell to Execute
-
+## Shell to Train the model
 ```
 #!/bin/bash
 echo "---- SETING ENVS ---- "
-export PATH=$PATH:/Users/anllogui/anaconda3/bin
+
+export PATH=$PATH:/home/anllogui/anaconda3/bin
+PYENV_HOME=$WORKSPACE/venv/
+export LC_ALL=es_ES.utf-8
+export LANG=es_ES.utf-8
+export FLASK_APP=$WORKSPACE/flaskr
+export FLASK_ENV=development
+export MLFLOW_TRACKING_URI="http://127.0.0.1:5000"
+
+echo "---- GETING PROPERTIES ----"
+
+file="./build.properties"
+
+if [ -f "$file" ]
+then
+  echo "$file found."
+
+  while IFS='=' read -r key value
+  do
+    key=$(echo $key | tr '.' '_')
+    eval ${key}=\${value}
+  done < "$file"
+
+  echo "Model Version = " ${model_version}
+  echo "Data Version  = " ${data_version}
+else
+  echo "$file not found."
+fi
+
+echo "---- CLEANING ENVIRONMENT ----"
+if [ -d $PYENV_HOME ]; then
+	echo "- Project exists: cleanning.."
+    rm -Rf $PYENV_HOME 
+fi
+source /home/anllogui/anaconda3/etc/profile.d/conda.sh
+echo "*** creating env ***"
+echo "*** activate ***"
+echo $PYENV_HOME
+echo "*** install reqs ***"
+conda env create -f environment.yml --prefix $PYENV_HOME
+conda activate pythonCI
+cd nb
+papermill Simple_Regression.ipynb output.ipynb -p data_ver ${data_version} -p model_ver ${model_version}
+
+ls -la ../models
+
+curl -v -u admin:admin -X POST 'http://localhost:8081/service/rest/v1/components?repository=maven-releases' -F "maven2.groupId=models" -F "maven2.artifactId=simple_regresion" -F "maven2.version=${data_version}.${model_version}" -F "maven2.asset1=../models/linear_regression_model_v${model_version}.pkl" -F "maven2.asset1.extension=pkl"
+
+```
+
+## Shell to Execute to test the app
+```
+#!/bin/bash
+echo "---- SETING ENVS ---- "
+export PATH=$PATH:/home/anllogui/anaconda3/bin
 PYENV_HOME=$WORKSPACE/venv/
 export LC_ALL=es_ES.utf-8
 export LANG=es_ES.utf-8
@@ -114,14 +173,13 @@ if [ -d $PYENV_HOME ]; then
 	echo "- Project exists: cleanning.."
     rm -Rf $PYENV_HOME 
 fi
-source /Users/anllogui/anaconda3/etc/profile.d/conda.sh
+source /home/anllogui/anaconda3/etc/profile.d/conda.sh
 echo "*** creating env ***"
-conda create --prefix $PYENV_HOME python=3.6
 echo "*** activate ***"
 echo $PYENV_HOME
-conda activate $PYENV_HOME
 echo "*** install reqs ***"
-conda install --file requirements.txt
+conda env create -f environment.yml --prefix $PYENV_HOME
+conda activate $PYENV_HOME
 echo "*** install flask ***"
 pip install -e .
 pytest
