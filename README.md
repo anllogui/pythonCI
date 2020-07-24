@@ -33,9 +33,8 @@ There are 3 main folders:
 
 Create environment:
 ```
-conda create --name pythonCI
+conda env create -f environment.yml
 conda activate pythonCI
-conda install --file requirements.txt
 ```
 
 ### Train the Model

@@ -1,4 +1,4 @@
-name: null
+name: pythonCI
 channels:
   - conda-forge
   - defaults
