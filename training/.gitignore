@@ -1,0 +1,13 @@
+# mypy
+.mypy_cache/
+.idea/
+.pythonCI/
+.pytest_cache/
+.vscode/
+flaskr.egg-info/
+*/__pycache__/
+.coverage
+training/nb/output\.ipynb
+venv/
+training/nb/\.ipynb_checkpoints/
+mlruns/
