@@ -187,6 +187,10 @@ pytest
 
 ```
 
+
+## Docker 
+docker build -t model-training .; docker run --rm --network host model-training
+
 # Deploy in GCP
 https://cloud.google.com/appengine/docs/standard/python/getting-started/python-standard-env
 https://cloud.google.com/python/setup

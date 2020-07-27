@@ -7,6 +7,6 @@
 flaskr.egg-info/
 */__pycache__/
 .coverage
-training/nb/output\.ipynb
-venv/
-training/nb/\.ipynb_checkpoints/
+mlruns/
+
+
