@@ -4,6 +4,7 @@ FROM continuumio/miniconda3
 #RUN set -x && apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 #CMD [ "/bin/bash", "-c" ]
 RUN apt-get install -y curl
+RUN conda update -n base -c defaults conda
 
 # set the working directory in the container
 WORKDIR /training
@@ -32,3 +33,7 @@ ENTRYPOINT sh train.sh
 #ENTRYPOINT ls -la nb
 #ENTRYPOINT python -c "import mlflow"
 #ENTRYPOINT echo $PATH
+
+# maintain it running
+ 
+CMD tail -f /dev/null

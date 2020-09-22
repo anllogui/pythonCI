@@ -157,6 +157,9 @@ curl -v -u admin:admin -X POST 'http://localhost:8081/service/rest/v1/components
 
 ```
 
+## start mlflow as server to log the trainings
+mlflow server
+
 ## Shell to Execute to test the app
 ```
 #!/bin/bash
@@ -189,6 +192,7 @@ pytest
 
 
 ## Docker 
+
 docker build -t model-training .; docker run --rm --network host model-training
 
 # Deploy in GCP
