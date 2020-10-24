@@ -11,3 +11,4 @@ training/nb/output\.ipynb
 venv/
 training/nb/\.ipynb_checkpoints/
 mlruns/
+env/
