@@ -22,6 +22,7 @@ dependencies:
   - matplotlib
   - seaborn
   - papermill
+  - joblib
   - pip
   - pip:
     - mlflow
