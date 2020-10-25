@@ -109,6 +109,13 @@ sudo chgrp -R anaconda /opt/anaconda3
 sudo adduser jenkins anaconda
 sudo chmod 777 -R /opt/anaconda3
 
+
+## Start all needed services
+- Nexux
+- Jenkins
+- Mlflow Server
+
+
 ## Docker 
 
 - Build and run training:
