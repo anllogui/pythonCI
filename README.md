@@ -54,7 +54,7 @@ mlflow ui
 
 Automatize Model Training and Versioning
 ```
-papermill Simple_Regression.ipynb output.ipynb -p data_ver 1 -p model_ver 1
+papermill simple_regression.ipynb output.ipynb -p data_ver 1 -p model_ver 1
 ```
 
 ### Expose the model
@@ -101,6 +101,56 @@ To access to jenkins: http://localhost:8080
 
 ```
 service start jenkins
+```
+
+## Train Shell
+```
+#!/bin/bash
+echo "---- SETING ENVS ---- "
+
+export PATH=$PATH:/home/anllogui/anaconda3/bin
+PYENV_HOME=$WORKSPACE/venv/
+export MLFLOW_TRACKING_URI="http://127.0.0.1:5000"
+
+cd training
+
+echo "---- GETING PROPERTIES ----"
+
+file="./train.properties"
+
+if [ -f "$file" ]
+then
+  echo "$file found."
+
+  while IFS='=' read -r key value
+  do
+    key=$(echo $key | tr '.' '_')
+    eval ${key}=\${value}
+  done < "$file"
+
+  echo "Model Version = " ${model_version}
+  echo "Data Version  = " ${data_version}
+else
+  echo "$file not found."
+fi
+
+echo "---- CLEANING ENVIRONMENT ----"
+if [ -d $PYENV_HOME ]; then
+    echo "- Project exists: cleanning.."
+    rm -Rf $PYENV_HOME 
+fi
+source /home/anllogui/anaconda3/etc/profile.d/conda.sh
+echo "*** creating env ***"
+echo $PYENV_HOME
+conda env create -f environment.yml --prefix $PYENV_HOME
+conda activate pythonCI
+cd nb
+papermill Simple_Regression.ipynb output.ipynb -p data_ver ${data_version} -p model_ver ${model_version}
+
+ls -la ../models
+
+curl -v -u admin:admin -X POST 'http://localhost:8081/service/rest/v1/components?repository=maven-releases' -F "maven2.groupId=models" -F "maven2.artifactId=simple_regresion" -F "maven2.version=${data_version}.${model_version}" -F "maven2.asset1=../models/linear_regression_model_v${model_version}.pkl" -F "maven2.asset1.extension=pkl"
+
 ```
 
 ## Docker 

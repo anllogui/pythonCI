@@ -15,3 +15,4 @@ def test_empty_fields(datafile):
             if row[0] in (None, ""):
                 no_blank_cells = False
     assert no_blank_cells
+
