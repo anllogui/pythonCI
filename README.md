@@ -86,22 +86,88 @@ To test the service:
 curl -i -H "Content-Type: application/json" -X POST -d '{"yearsOfExperience":8}' http://localhost:5000/
 ```
 
-## Continuous integration
+# Continuous integration
+
+## Jenkins
 Install Jenkins for ubuntu:
 https://linuxize.com/post/how-to-install-jenkins-on-ubuntu-18-04/
 
 After installing Jenkins:
-### start
 ```
 services start jenkins
 ```
 To access to jenkins: http://localhost:8080
 
-### stop
+
+Install Anaconda for all users and give permissions:
+```
+sudo addgroup anaconda
+sudo chgrp -R anaconda /opt/anaconda3
+sudo adduser jenkins anaconda
+sudo chmod 777 -R /opt/anaconda3
+```
+### Automated Training in Jenkins
 
 ```
-service start jenkins
+#!/bin/bash
+echo "---- SETING ENVS ---- "
+
+export PATH=$PATH:/opt/anaconda3/
+PYENV_HOME=$WORKSPACE/venv/
+export MLFLOW_TRACKING_URI="http://127.0.0.1:5000"
+
+cd training
+
+echo "---- GETING PROPERTIES ----"
+
+file="./train.properties"
+
+if [ -f "$file" ]
+then
+  echo "$file found."
+
+  while IFS='=' read -r key value
+  do
+    key=$(echo $key | tr '.' '_')
+    eval ${key}=\${value}
+  done < "$file"
+
+  echo "Model Version = " ${model_version}
+  echo "Data Version  = " ${data_version}
+else
+  echo "$file not found."
+fi
+
+echo "---- CLEANING ENVIRONMENT ----"
+if [ -d $PYENV_HOME ]; then
+    echo "- Project exists: cleanning.."
+    rm -Rf $PYENV_HOME 
+fi
+source /opt/anaconda3/etc/profile.d/conda.sh
+echo "*** creating env ***"
+echo $PYENV_HOME
+conda env create -f environment.yml --prefix $PYENV_HOME
+conda activate $PYENV_HOME
+cd nb
+papermill simple_regression.ipynb output.ipynb -p data_ver ${data_version} -p model_ver ${model_version}
+
+ls -la ../models
+
+#push to nexus. comment if not installed
+curl -v -u admin:admin -X POST 'http://localhost:8081/service/rest/v1/components?repository=maven-releases' -F "maven2.groupId=models" -F "maven2.artifactId=simple_regresion" -F "maven2.version=${data_version}.${model_version}" -F "maven2.asset1=../models/linear_regression_model_v${model_version}.pkl" -F "maven2.asset1.extension=pkl"
 ```
+
+## Nexus
+(This step is optional)
+Install Nexus for Ubuntu:
+https://medium.com/@everton.araujo1985/install-sonatype-nexus-3-on-ubuntu-20-04-lts-562f8ba20b98
+
+
+## Start MLFlow as a server
+```
+mlflow server
+```
+
 
 ## Train Shell
 ```
