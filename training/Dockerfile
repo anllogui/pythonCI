@@ -6,8 +6,13 @@ FROM continuumio/miniconda3
 RUN apt-get install -y curl
 RUN conda update -n base -c defaults conda
 
+RUN useradd --create-home appuser
+USER appuser
+
+ENV PYTHONFAULTHANDLER=1
+
 # set the working directory in the container
-WORKDIR /
+WORKDIR /home/appuser
 
 # copy the dependencies file to the working directory
 COPY ./ .
