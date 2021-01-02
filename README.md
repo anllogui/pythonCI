@@ -228,7 +228,7 @@ docker build -t model-training .; docker run --rm --network host model-training
 
 - Build and run execution:
 cd training
-docker build -t model-exploitation .; docker run --rm --network host model-exploitation
+docker build -t model-exploitation .; docker run -p 127.0.0.1:5000:5000 model-exploitation
 
 
 - Delete old images:
