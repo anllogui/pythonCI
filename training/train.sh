@@ -25,11 +25,7 @@ else
   echo "$file not found."
 fi
 
-echo "---- CLEANING ENVIRONMENT ----"
-if [ -d $PYENV_HOME ]; then
-	echo "- Project exists: cleanning.."
-    rm -Rf $PYENV_HOME 
-fi
+echo "---- Launch notebook ----"
 cd nb
 papermill simple_regression.ipynb output.ipynb -p data_ver ${data_version} -p model_ver ${model_version}
 cd ../models
