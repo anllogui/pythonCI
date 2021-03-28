@@ -1,0 +1,8 @@
+name: mlflow_server
+channels:
+  - defaults
+dependencies:
+  - pip
+  - python=3
+  - pip:
+    - mlflow

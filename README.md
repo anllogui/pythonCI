@@ -164,6 +164,11 @@ https://medium.com/@everton.araujo1985/install-sonatype-nexus-3-on-ubuntu-20-04-
 
 
 ## Start MLFlow as a server
+Create Mlflow Project:
+mkdir mlflow_server
+conda create -n mlflow_server python=3
+conda activate mlflow_server
+pip install mlflow
 ```
 mlflow server
 ```
@@ -230,6 +235,13 @@ docker build -t model-training .; docker run --rm --network host model-training
 cd training
 docker build -t model-exploitation .; docker run -p 127.0.0.1:5000:5000 model-exploitation
 
+### Docker compose
+docker-compose run --service-ports mlflow_server
+
 
 - Delete old images:
 docker system prune -a
+
+
+- Connect to a container:
+docker exec -it <container name> /bin/bash
