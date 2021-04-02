@@ -8,3 +8,9 @@ services:
     ports:
       - "5000:5000"
     command: mlflow server -h 0.0.0.0
+  training:
+    restart: always
+    build: training
+    image: training
+    container_name: training
+    

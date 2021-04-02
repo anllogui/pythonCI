@@ -10,3 +10,4 @@ flaskr.egg-info/
 mlruns/
 
 
+.DS_Store
