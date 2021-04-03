@@ -228,16 +228,21 @@ curl -v -u admin:admin -X POST 'http://localhost:8081/service/rest/v1/components
 
 - Build and run training:
 cd training
-docker build -t model-training .; docker run --rm --network host model-training
-
+docker build -t training .; docker run --rm --network host training
 
 - Build and run execution:
 cd training
 docker build -t model-exploitation .; docker run -p 127.0.0.1:5000:5000 model-exploitation
 
 ### Docker compose
+mlflow server:
 docker-compose run --service-ports mlflow_server
 
+training:
+docker-compose run --service-ports training
+
+all:
+docker-compose up --build
 
 - Delete old images:
 docker system prune -a

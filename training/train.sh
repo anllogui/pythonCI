@@ -3,7 +3,7 @@ echo "---- SETING ENVS ---- "
 
 #export LC_ALL=es_ES.utf-8
 #export LANG=es_ES.utf-8
-export MLFLOW_TRACKING_URI="http:// host.docker.internal:5000"
+export MLFLOW_TRACKING_URI="http://mlflow_server:5000"
 
 echo "---- GETING PROPERTIES ----"
 
