@@ -1,5 +1,5 @@
 # set base image (host OS)
-FROM continuumio/miniconda3
+FROM continuumio/miniconda3 AS environment-image
 
 #RUN set -x && apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 #CMD [ "/bin/bash", "-c" ]
@@ -16,7 +16,7 @@ ENV PYTHONFAULTHANDLER=1
 WORKDIR /
 
 # copy the dependencies file to the working directory
-COPY ./ .
+COPY environment.yml .
 # install dependencies
 
 RUN conda env create -f environment.yml \
@@ -28,6 +28,10 @@ RUN conda env create -f environment.yml \
 # DOESN'T WORK --> Pull the environment name out of the environment.yml
 #RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.bashrc
 #ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
+FROM continuumio/miniconda3 AS train-image
+COPY --from=environment-image /opt/conda/envs/pythonCI /opt/conda/envs/pythonCI
+
+COPY ./ .
 
 # Pull the environment name out of the environment.yml
 RUN echo "conda activate pythonCI" >> ~/.bashrc
@@ -42,7 +46,7 @@ ENV PATH /opt/conda/envs/pythonCI/bin:$PATH
 #CMD ["python", "-c \"import mlflow\""]
 #ENTRYPOINT papermill nb/simple_regression.ipynb nb/output.ipynb -p data_ver 1 -p model_ver 1
 #ENTRYPOINT ./train.sh
-ENTRYPOINT ["/bin/bash", "/train.sh"]
+ENTRYPOINT ["/bin/bash", "/train.sh"] 
 #ENTRYPOINT ls -la nb
 #ENTRYPOINT python -c "import mlflow"
 #ENTRYPOINT echo $PATH
