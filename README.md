@@ -231,7 +231,7 @@ cd training
 docker build -t training .; docker run --rm --network host training
 
 - Build and run execution:
-cd training
+cd exploitation
 docker build -t model-exploitation .; docker run -p 127.0.0.1:5000:5000 model-exploitation
 
 ### Docker compose
