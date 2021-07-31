@@ -3,8 +3,9 @@ FROM continuumio/miniconda3 AS environment-image
 
 #RUN set -x && apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 #CMD [ "/bin/bash", "-c" ]
-RUN apt-get install -y curl
+#RUN apt-get install -y curl
 #RUN conda update -n base -c defaults conda
+RUN conda install mamba -n base -c conda-forge
 
 #RUN useradd --create-home appuser
 #USER appuser
@@ -18,8 +19,7 @@ WORKDIR /
 # copy the dependencies file to the working directory
 COPY environment.yml .
 # install dependencies
-
-RUN conda env create -f environment.yml \
+RUN mamba env create -f environment.yml \
     && conda clean -afy \
     && find /opt/conda/ -follow -type f -name '*.a' -delete \
     && find /opt/conda/ -follow -type f -name '*.pyc' -delete \
@@ -28,7 +28,7 @@ RUN conda env create -f environment.yml \
 # DOESN'T WORK --> Pull the environment name out of the environment.yml
 #RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.bashrc
 #ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
-FROM continuumio/miniconda3 AS train-image
+FROM environment-image AS train-image
 COPY --from=environment-image /opt/conda/envs/pythonCI /opt/conda/envs/pythonCI
 
 COPY ./ .
