@@ -3,13 +3,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - nomkl
-  - python=3.6
-  - click
-  - Flask
-  - itsdangerous
-  - Jinja2
-  - MarkupSafe
   - numpy
   - pandas
   - python-dateutil
@@ -17,13 +10,12 @@ dependencies:
   - scikit-learn
   - scipy
   - six
-  - Werkzeug
   - pytest
   - jupyter
   - matplotlib
-  - seaborn
   - papermill
   - joblib
+  - seaborn
   - pip
   - pip:
     - mlflow

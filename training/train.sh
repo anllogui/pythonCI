@@ -3,7 +3,7 @@ echo "---- SETING ENVS ---- "
 
 #export LC_ALL=es_ES.utf-8
 #export LANG=es_ES.utf-8
-export MLFLOW_TRACKING_URI="http://mlflow_server:5000"
+export MLFLOW_TRACKING_URI="http://host.docker.internal:5000"
 
 echo "---- GETING PROPERTIES ----"
 
@@ -28,6 +28,6 @@ fi
 echo "---- Launch notebook ----"
 cd nb
 papermill simple_regression.ipynb output.ipynb -p data_ver ${data_version} -p model_ver ${model_version}
-cd ../models
-ls -la models
+
+# añadir script en python para descargar vía API de MLFlow el modelo o se mete en otra
 #curl -v -u admin:admin -X POST 'http://localhost:8081/service/rest/v1/components?repository=maven-releases' -F "maven2.groupId=models" -F "maven2.artifactId=simple_regresion" -F "maven2.version=${data_version}.${model_version}" -F "maven2.asset1=../models/linear_regression_model_v${model_version}.pkl" -F "maven2.asset1.extension=pkl"

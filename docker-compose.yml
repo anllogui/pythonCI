@@ -14,3 +14,7 @@ services:
     build: training
     image: training
     container_name: training
+networks:
+  default:
+    external: true
+    name: training-net
