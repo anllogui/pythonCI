@@ -1,6 +1,6 @@
 name: pythonCI
 channels:
-  - conda-forge
+  - conda-forge 
   - defaults
 dependencies:
   - numpy
