@@ -12,3 +12,4 @@ venv/
 training/nb/\.ipynb_checkpoints/
 mlruns/
 env/
+exploitation/flaskr.egg-info/

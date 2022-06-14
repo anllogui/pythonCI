@@ -28,6 +28,8 @@ fi
 echo "---- Launch notebook ----"
 cd nb
 papermill simple_regression.ipynb output.ipynb -p data_ver ${data_version} -p model_ver ${model_version}
+jupyter nbconvert --to html output.ipynb 
+mv output.html ../output
 
 # añadir script en python para descargar vía API de MLFlow el modelo o se mete en otra
 #curl -v -u admin:admin -X POST 'http://localhost:8081/service/rest/v1/components?repository=maven-releases' -F "maven2.groupId=models" -F "maven2.artifactId=simple_regresion" -F "maven2.version=${data_version}.${model_version}" -F "maven2.asset1=../models/linear_regression_model_v${model_version}.pkl" -F "maven2.asset1.extension=pkl"
