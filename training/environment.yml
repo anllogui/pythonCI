@@ -1,4 +1,4 @@
-name: pythonCI
+name: ci_training
 channels:
   - conda-forge 
   - defaults

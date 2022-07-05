@@ -1,22 +1,20 @@
 # Seminario Ciencia de Datos
 
-## First Part
+## First Hands On
 
 ### Install depencendies
 
 - Install conda: https://conda.io/docs/user-guide/install/index.html#
-
-- Install MLflow:
-
+- Install mamba: 
 ```
-pip install mlflow
+conda install mamba -n base -c conda-forge
 ```
 
 ## Get the Code
 
 Fork the code from:
 ```
-https://github.com/anllogui/master_ciencia_datos_21
+https://github.com/anllogui/pythonCI
 ```
 
 Get the code:
@@ -30,16 +28,15 @@ There are 3 main folders:
 
 We will start with the training folder:
 - model: notebook for training the model
-- flaskr: service with the model embedeed
-- tests: service testing
+- tests: data testing
 
 ## Configure environment
 
 ### Create environment
 In the training folder type:
 ```
-conda env create -f environment.yml
-conda activate pythonCI
+mamba env create -f environment.yml
+mamba activate ci_training
 ```
 
 ### Train the Model
