@@ -1,4 +1,4 @@
-# Seminario Ciencia de Datos
+# MLOps Lecture
 
 ## First Hands On
 
